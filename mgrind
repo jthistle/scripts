@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+valgrind /usr/MuseScore/build.debug/mscore/mscore

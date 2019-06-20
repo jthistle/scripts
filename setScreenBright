@@ -2,20 +2,41 @@
 
 NEWBRIGHT=2000
 
-NEWBRIGHT=$(cat /sys/class/backlight/intel_backlight/brightness)
 
 MAXBRIGHT=$(cat /sys/class/backlight/intel_backlight/max_brightness)
+
+NEWBRIGHT=$(cat /sys/class/backlight/intel_backlight/brightness)
+NEWBRIGHT=$((($NEWBRIGHT * 100)/$MAXBRIGHT))
+
+MINBRIGHT=$((MAXBRIGHT/10))
 
 if [ "$1" = "inc" ]; then
 	NEWBRIGHT=$((NEWBRIGHT+$2))
 elif [ "$1" = "dec" ]; then
 	NEWBRIGHT=$((NEWBRIGHT-$2))
 elif [ "$1" = "set" ]; then
-	NEWBRIGHT=$2
+	NEWBRIGHT=$2 
+else
+	echo """Usage: setScreenBright command [value]
+Commands:
+	set - set the screen brightness to value percent
+	inc - increase the screen brightness by value percent
+	dec - decrese the screen brightness by value percent"""
+	exit 1
 fi
 
-if [ $NEWBRIGHT -gt $MAXBRIGHT ]; then
-	NEWBRIGHT = $MAXBRIGHT
+REALBRIGHT=$((($NEWBRIGHT*$MAXBRIGHT)/100))
+
+if [ $REALBRIGHT -gt $MAXBRIGHT ]; then
+	REALBRIGHT=$MAXBRIGHT
+elif [ $REALBRIGHT -lt $MINBRIGHT ]; then
+	REALBRIGHT=$MINBRIGHT
 fi
 
-echo $NEWBRIGHT | sudo tee /sys/class/backlight/intel_backlight/brightness
+{
+	echo $REALBRIGHT | sudo tee /sys/class/backlight/intel_backlight/brightness
+} &> /dev/null
+
+echo "Set screen brightness to $NEWBRIGHT%"
+
+exit 0 
