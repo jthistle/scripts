@@ -21,7 +21,7 @@ else
 Commands:
 	set - set the screen brightness to value percent
 	inc - increase the screen brightness by value percent
-	dec - decrese the screen brightness by value percent"""
+	dec - decrease the screen brightness by value percent"""
 	exit 1
 fi
 
