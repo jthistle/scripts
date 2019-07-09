@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+# Add the code below to your ~/.bashrc
+
+shopt -s expand_aliases
+
+IFS_=${IFS}
+IFS=":" read -ra PATHS <<< "$PATH"
+
+for i in "${PATHS[@]}"; do
+	for j in $( ls $i ); do
+		alias ${j^^}="sudo $j"		
+	done
+done
+
+IFS=${IFS_}
+
+
