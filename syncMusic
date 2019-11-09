@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+if [ -z ${1+x} ]; then
+  echo "Usage: syncMusic [REMOTE] (Music directory, with trailing slash)";
+else
+  rsync -trv --ignore-existing /media/MASSIVE/Music/ $1
+fi
