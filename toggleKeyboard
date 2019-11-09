@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+(setxkbmap -query | grep -q "layout:\s\+gb") && setxkbmap de qwerty || setxkbmap gb
