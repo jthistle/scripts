@@ -1,3 +1,10 @@
 #!/usr/bin/env bash
 
-(setxkbmap -query | grep -q "layout:\s\+gb") && setxkbmap de qwerty || setxkbmap gb
+if (setxkbmap -query | grep -q "layout:\s\+gb"); then
+    setxkbmap de qwerty
+elif (setxkbmap -query | grep -q "layout:\s\+de"); then
+    echo "to ru"
+    setxkbmap ru
+else
+    setxkbmap gb
+fi
